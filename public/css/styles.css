@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Irish+Grover&family=Praise&family=Qahiri&family=Roboto:wght@100&family=Yuji+Mai&display=swap');
+label{
+    font-style: bold;
+}
+
+#Title{
+    width:50vw;
+    height:5vh;
+}
+
+#Post{
+    width: 50vw;
+    height:20vh;
+}
+
+li{
+    display: inline-block;
+}
+
+a{
+    text-decoration: none;
+    font-family: 'Irish Grover', cursive;
+    font-family: 'Praise', cursive;
+    font-family: 'Qahiri', sans-serif;
+    font-family: 'Roboto', sans-serif;
+    font-family: 'Yuji Mai', serif;
+    color: darkorange;
+    margin-right: 20px;
+}
+
+.navbar-nav{
+    display: inline;
+}
+
+.footer{
+    position:fixed;
+    bottom:0;
+    width:100%;
+    height:60px;   /* Height of the footer */
+    background:#6cf;
+}
+
+.footer p{
+    margin-left: 40vw;
+    margin-top: 2vh;
+    font-family: 'Irish Grover', cursive;
+    font-family: 'Praise', cursive;
+    font-family: 'Qahiri', sans-serif;
+    font-family: 'Roboto', sans-serif;
+    font-family: 'Yuji Mai', serif;
+    font-size: 20px;
+}
+
+.container{
+    overflow: auto;
+}
+
