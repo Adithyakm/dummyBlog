@@ -1,4 +1,5 @@
 const express = require("express");
+const mongoose = require("Mongoose");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const _ = require('lodash');
@@ -9,17 +10,50 @@ const app = express();
 app.set("view engine","ejs");
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static("public"));
+mongoose.connect("mongodb://127.0.0.1:27017/BlogsDB",{useNewUrlParser:true});
+
+const blogSchema = new mongoose.Schema({title :String,content:String});
+
+const Blog = mongoose.model("Blog",blogSchema);
 
 let posts = []; 
+var count=0;
 
 app.listen(3000,function(){
     console.log("Server started on port 3000");
 })
 
 app.get("/",function(req,res){
-    res.render("home",{homeContent:homeStartingContent,post:posts});
-    posts.forEach(function(post){
-        console.log(post.title);
+    // res.render("home",{homeContent:homeStartingContent,post:posts});
+    // posts.forEach(function(post){
+    //     console.log(post.title);
+    // })
+    Blog.find(function(err,blogs){
+        if(err){
+            console.log(err);
+        }else{
+            let val = {title:'',content:''};
+            blogs.forEach(function(blog){
+                val.title=blog.title;
+                val.content=blog.content;
+                console.log(val);
+                for(let i=0;i<posts.length;i++){
+                if(posts[i].title===blog.title){
+                    count+=1;
+                }
+                }
+                // console.log(blog.title);
+                // console.log(blog.content);
+                if(count==0){
+                    posts.push(val);
+                }
+                val={title:'',content:''};
+                count=0;
+
+            });
+            console.log(posts);
+            res.render("home",{homeContent:homeStartingContent,post:posts})
+        }
     })
 });
 
@@ -49,12 +83,26 @@ app.get("/compose",function(req,res){
 
 app.post("/compose",function(req,res){
     
-    const post = {
+    // const post = {
+    //     title:req.body.Title,
+    //     content:req.body.Post
+    // };
+
+    // posts.push(post);
+    // res.redirect("/");
+
+    const blog = new Blog({
         title:req.body.Title,
         content:req.body.Post
-    };
+    });
 
-    posts.push(post);
-    res.redirect("/");
+    blog.save(function(err){
+        if(err){
+            console.log("Blog not saved to database");
+        }else{
+            console.log("successfully saved to db");
+            res.redirect("/")
+        }
+    })
     
 })
